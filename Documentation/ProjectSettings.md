@@ -27,21 +27,18 @@ Keeps validation results up to date automatically while editing.
 - Enable for continuous, always-current feedback (recommended).
 - Disable to scan only when you trigger a refresh manually (the `Refresh` button in a results view, or the toolbar badge's `Refresh` context action).
 
-#### Scan Build-Related Scenes
+#### Scan Scope
 
-Controls whether scans cover only the currently loaded scenes, or also additional build-related scenes.
+Controls how far validation reaches. The three modes are strictly additive - each one validates everything the previous mode does, plus more. In every mode, prefabs and ScriptableObjects are included by following references (the assets a build would actually pull in), not by scanning the whole project - except for the widest mode.
 
-- When enabled, scans also include Build Settings scenes (and Addressable scenes when the Addressables package is installed).
-- When disabled, scans are limited to the currently loaded scenes.
+- **Loaded Scenes & Prefab Stage Only** - the currently loaded scenes and the open prefab edit stage, plus the prefabs and ScriptableObjects they reference (recursively). Note: because this ignores everything else in a build, blocking issues elsewhere can go unnoticed - a warning is shown while it is selected.
+- **Build-Referenced Assets** *(default, recommended)* - the above, plus Build Settings scenes (and, when the Addressables package is installed, Addressable scenes), the Player Settings preloaded assets, all Addressable assets, and everything in `Resources`/`StreamingAssets` folders - together with every prefab and ScriptableObject those roots reference (recursively). This matches what ends up in a build, so assets nothing references can no longer produce blocking issues. Addressable assets are always included (not only when referenced) because they are frequently loaded by address/path string rather than by a direct reference.
+- **All Assets** - every prefab and ScriptableObject in the project, whether anything references it or not. Choose this if you want to validate the entire project (the behavior prior to this setting); it is slower on large projects and may report issues in assets no build includes.
+
+The scope is recomputed automatically when the loaded scenes, prefab stage, Build Settings scene list, or Addressables configuration change. Use a manual `Refresh` for an exact, up-to-the-moment result.
+
 - See [What You Can Validate](../README.md#what-you-can-validate) for the full list of validated scopes.
 
-#### Auto Try Fix
-
-Automatically attempts recovery configured by [`Required`](ScriptingAPI.md#required-attribute) and [`RequiredFieldRule<TTarget>`](ScriptingAPI.md#requiredfieldrule) while scanning.
-
-- Enable when you want automatic assignment attempts during refresh.
-- Disable when you want explicit manual control via `Try Fix` in results.
-- Related API: [Required Parameter Reference](ScriptingAPI.md#required-parameter-reference), [RequireField Callback Signature](ScriptingAPI.md#requirefield-callback-signature).
 
 ### UI Integrations
 

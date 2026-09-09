@@ -25,21 +25,23 @@ The sample content exercises the optional, integration-specific built-in rules. 
 
 - Physics (missing colliders on rigidbodies)
 - UGUI (`Selectable` target graphic)
-- TextMeshPro (font / material)
+- TextMeshPro (a `TMP_Text` field in the coverage prefab).
+  <br>*TextMeshPro ships inside `com.unity.ugui` 2.0.0+ (Unity 6+); with older uGUI (below 2.0.0, e.g. Unity 2022 LTS) the sample installs the separate `com.unity.textmeshpro` package automatically on import.*
 - Input System (action asset)
 
 Checks for packages that are not installed are simply skipped. See [Built-in Rules](BuiltInRules.md) for the full list of what each integration validates.
 
 ## Import the Sample
 
-In Package Manager:
+Find
 
-1. Select `derHugo - Scene Validation`
-2. Import sample `Scene Validation Example`
+    Assets/derHugo/SceneValidation/Samples/SceneValidationExample.unitypackage
+
+and double click it in order to import the sample
 
 The imported content lands under:
 
-    Assets/Samples/derHugo - Scene Validation/<version>/Scene Validation Example/
+    Assets/derHugo/SceneValidation/Samples/
 
 ## View Reported Issues
 

@@ -1,4 +1,4 @@
-<h1><img src="Documentation~/images/Icon.png" alt="Logo" width="120" align="middle" />&nbsp; Scene Validation</h1>
+<h1><img src="Documentation/images/Icon.png" alt="Logo" width="120" align="middle" />&nbsp; Scene Validation</h1>
 
 `SceneValidation` is an editor-first quality gate that catches missing references and setup problems before they break Play Mode or builds.
 
@@ -40,33 +40,33 @@
 - Missing managed-reference types on components and ScriptableObject assets
 - Addressable scenes (if installed)
 
-See [Project Settings - Settings](Documentation~/ProjectSettings.md#settings) for scope toggles and build/play integration behavior.
+See [Project Settings - Settings](Documentation/ProjectSettings.md#settings) for scope toggles and build/play integration behavior.
 
 ## Define Validation Requirements
 
 ### Required Attribute
 
-Use [`Required`](Documentation~/ScriptingAPI.md#required-attribute) when you own the serialized field.
+Use [`Required`](Documentation/ScriptingAPI.md#required-attribute) when you own the serialized field.
 
-- API details: [Scripting API - Required Attribute](Documentation~/ScriptingAPI.md#required-attribute)
-- option details: [Scripting API - Required Parameter Reference](Documentation~/ScriptingAPI.md#required-parameter-reference)
-- workflow guide: [Getting Started - Required Attribute](Documentation~/GettingStarted.md#required-attribute)
+- API details: [Scripting API - Required Attribute](Documentation/ScriptingAPI.md#required-attribute)
+- option details: [Scripting API - Required Parameter Reference](Documentation/ScriptingAPI.md#required-parameter-reference)
+- workflow guide: [Getting Started - Required Attribute](Documentation/GettingStarted.md#required-attribute)
 
 ### RequiredFieldRule
 
-Use [`RequiredFieldRule<TTarget>`](Documentation~/ScriptingAPI.md#requiredfieldrule) for third-party or external types that cannot be annotated directly.
+Use [`RequiredFieldRule<TTarget>`](Documentation/ScriptingAPI.md#requiredfieldrule) for third-party or external types that cannot be annotated directly.
 
-- API details: [Scripting API - RequiredFieldRule](Documentation~/ScriptingAPI.md#requiredfieldrule)
-- callback details: [Scripting API - RequireField Callback Signature](Documentation~/ScriptingAPI.md#requirefield-callback-signature)
-- workflow guide: [Getting Started - RequiredFieldRule](Documentation~/GettingStarted.md#requiredfieldrule)
+- API details: [Scripting API - RequiredFieldRule](Documentation/ScriptingAPI.md#requiredfieldrule)
+- callback details: [Scripting API - RequireField Callback Signature](Documentation/ScriptingAPI.md#requirefield-callback-signature)
+- workflow guide: [Getting Started - RequiredFieldRule](Documentation/GettingStarted.md#requiredfieldrule)
 
 ### ValidationRule
 
-Use [`ValidationRule<TTarget>`](Documentation~/ScriptingAPI.md#validationrule) for semantic checks that are not just missing references.
+Use [`ValidationRule<TTarget>`](Documentation/ScriptingAPI.md#validationrule) for semantic checks that are not just missing references.
 
-- API details: [Scripting API - ValidationRule](Documentation~/ScriptingAPI.md#validationrule)
-- callback details: [Scripting API - ValidationRule Authoring Surface](Documentation~/ScriptingAPI.md#validationrule-authoring-surface)
-- workflow guide: [Getting Started - ValidationRule](Documentation~/GettingStarted.md#validationrule)
+- API details: [Scripting API - ValidationRule](Documentation/ScriptingAPI.md#validationrule)
+- callback details: [Scripting API - ValidationRule Authoring Surface](Documentation/ScriptingAPI.md#validationrule-authoring-surface)
+- workflow guide: [Getting Started - ValidationRule](Documentation/GettingStarted.md#validationrule)
 
 ## UI and Results
 
@@ -75,28 +75,28 @@ Use [`ValidationRule<TTarget>`](Documentation~/ScriptingAPI.md#validationrule) f
 
 ### Main Toolbar Badge
 
-<img src="Documentation~/images/ToolbarBadge.png" width="400"/>
+<img src="Documentation/images/ToolbarBadge.png" width="400"/>
 
 ### Hierarchy Badges
 
-<img src="Documentation~/images/HierarchyBadges.png" width="400">
+<img src="Documentation/images/HierarchyBadges.png" width="400">
 
 ### Custom Object Field Drawer
 
-<img src="Documentation~/images/CustomDrawer.png" width="400">
+<img src="Documentation/images/CustomDrawer.png" width="400">
 
 ### Prevent Entering Play Mode
 
-<img src="Documentation~/images/PlayPrevented.png" width="200">
+<img src="Documentation/images/PlayPrevented.png" width="200">
 
-<img src="Documentation~/images/PlayButton.png" width="400">
+<img src="Documentation/images/PlayButton.png" width="400">
 
 Cancels the Play Mode transition and disables the Play/Pause toolbar buttons while blocking validation errors exist.
 
 ### Build Pre-Processor Handling
 
-<img src="Documentation~/images/BuildPrevent_Issues.png" width="200">
-<img src="Documentation~/images/BuildPrevented_Ignored.png" width="200">
+<img src="Documentation/images/BuildPrevent_Issues.png" width="200">
+<img src="Documentation/images/BuildPrevented_Ignored.png" width="200">
 
 ### Results Window
 
@@ -104,19 +104,19 @@ Cancels the Play Mode transition and disables the Play/Pause toolbar buttons whi
 
 Results behavior details:
 
-- [UI Integrations](Documentation~/UIIntegrations.md)
-- [Results Views](Documentation~/ResultsViews.md)
-- [Project Settings - Issues](Documentation~/ProjectSettings.md#issues)
+- [UI Integrations](Documentation/UIIntegrations.md)
+- [Results Views](Documentation/ResultsViews.md)
+- [Project Settings - Issues](Documentation/ProjectSettings.md#issues)
 
 ## Documentation
 
-- [Getting Started](Documentation~/GettingStarted.md): quick-start onboarding and first setup pass.
-- [UI Integrations](Documentation~/UIIntegrations.md): Visuals API for toolbar, hierarchy, inspector, play/build guardrails, and integration states.
-- [Project Settings](Documentation~/ProjectSettings.md): all toggles, lists, and scope behavior.
-- [Results Views](Documentation~/ResultsViews.md): validation window and project settings issue view behavior.
-- [Built-in Rules](Documentation~/BuiltInRules.md): predefined requirement rules that ship with this package
-- [Sample](Documentation~/Sample.md): walkthrough of the included example content.
-- [Scripting API](Documentation~/ScriptingAPI.md): Scripting API for `Required`, `RequiredFieldRule<TTarget>`, and `ValidationRule<TTarget>`.
+- [Getting Started](Documentation/GettingStarted.md): quick-start onboarding and first setup pass.
+- [UI Integrations](Documentation/UIIntegrations.md): Visuals API for toolbar, hierarchy, inspector, play/build guardrails, and integration states.
+- [Project Settings](Documentation/ProjectSettings.md): all toggles, lists, and scope behavior.
+- [Results Views](Documentation/ResultsViews.md): validation window and project settings issue view behavior.
+- [Built-in Rules](Documentation/BuiltInRules.md): predefined requirement rules that ship with this package
+- [Sample](Documentation/Sample.md): walkthrough of the included example content.
+- [Scripting API](Documentation/ScriptingAPI.md): Scripting API for `Required`, `RequiredFieldRule<TTarget>`, and `ValidationRule<TTarget>`.
 
-[1]: Documentation~/images/Integrations.png
-[2]: Documentation~/images/ResultsWindow_FullUI.png
+[1]: Documentation/images/Integrations.png
+[2]: Documentation/images/ResultsWindow_FullUI.png

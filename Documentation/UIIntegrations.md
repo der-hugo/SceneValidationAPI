@@ -120,7 +120,6 @@ Applies to unresolved object-reference members discovered through:
   - ignored issue: `unignore`
 - `Try Fix` appears when:
   - recovery is configured
-  - `Auto Try Fix` is disabled
   - the configured recovery is currently executable
 
 ## Prevent Entering Play Mode

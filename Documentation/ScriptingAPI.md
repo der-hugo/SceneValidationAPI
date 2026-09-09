@@ -25,6 +25,7 @@ This page documents the public extension API of `SceneValidation` and is aligned
 - [ValidationRule](#validationrule)
   - [ValidationRule Authoring Surface](#validationrule-authoring-surface)
   - [AddIssue Callback Parameters](#addissue-callback-parameters)
+  - [Custom Recovery (optional)](#custom-recovery-optional)
   - [ValidationRule Behavior Notes](#validationrule-behavior-notes)
   - [ValidationRule Related Pages](#validationrule-related-pages)
 - [Choose the Right Extension Type](#choose-the-right-extension-type)
@@ -186,9 +187,11 @@ Fix helpers:
 
 | API | Use |
 | --- | --- |
-| `ValidationEngine.HasTryFixConfiguredForIssue(ValidationIssue issue)` | Checks whether a required-reference issue has configured recovery options. |
+| `ValidationEngine.HasTryFixConfiguredForIssue(ValidationIssue issue)` | Checks whether an issue has configured recovery (a `Required`/`RequiredFieldRule` recovery option, or a custom `ValidationRule` that overrides `TryRecover`). |
 | `ValidationEngine.CanTryFixIssue(ValidationIssue issue)` | Checks whether recovery can run right now. |
-| `ValidationEngine.TryFixIssue(ValidationIssue issue)` | Attempts configured recovery for a required-reference issue. |
+| `ValidationEngine.TryFixIssue(ValidationIssue issue)` | Attempts configured recovery for one issue. |
+| `ValidationEngine.CountTryFixableIssues(ValidationResultScope scope)` | Counts non-ignored issues in a scope that have configured recovery (backs the `Try Fix All` button). |
+| `ValidationEngine.TryFixAll(ValidationResultScope scope)` | Attempts recovery for every non-ignored, recovery-configured issue in a scope, then refreshes once; returns how many were fixed. |
 | `ValidationEngine.CanRemoveMissingComponents(GameObject gameObject)` | Checks whether missing component scripts can be removed. |
 | `ValidationEngine.RemoveMissingComponents(GameObject gameObject)` | Removes missing component scripts from a GameObject. |
 | `ValidationEngine.CanFixMissingManagedReferenceTypes(GameObject gameObject)` | Checks scene/prefab object managed-reference cleanup support. |
@@ -272,7 +275,7 @@ public sealed class WeaponView : MonoBehaviour
 | Parameter | Meaning | Validation Effect |
 | --- | --- | --- |
 | `ValidationScope scope` | Where the requirement is enforced. | `Scene` applies in scene validation workflows. `Prefab` applies in prefab workflows and prefab-context checks. |
-| `RecoveryOption recovery` | Which fix strategies are allowed when the reference is missing. | Controls what `Try Fix` can attempt (manual and auto mode). Multiple flags can be combined. |
+| `RecoveryOption recovery` | Which fix strategies are allowed when the reference is missing. | Controls what the manual `Try Fix` / `Try Fix All` actions can attempt. Multiple flags can be combined. |
 | `ValidationIssueSeverity severity` | How strict the issue is reported. | `Error` is blocking. `Warning` is advisory. |
 
 ### Recovery Option Order
@@ -378,6 +381,7 @@ namespace MyCompany.Validation
 - `SettingsDisplayName`: label shown in the Rules page.
 - `SettingsDescription`: description/tooltip shown in the Rules page.
 - `Validate(in ValidationRuleContext context, AddIssueCallback addIssue)`: called for each matching target object.
+- `TryRecover(in ValidationRuleRecoveryContext context)`: optional; override to provide a manual fix - see [Custom Recovery](#custom-recovery-optional).
 
 `ValidationRuleContext` members:
 
@@ -395,13 +399,42 @@ namespace MyCompany.Validation
 - `message`: concise violation description shown in results.
 - `severity`: `Error` or `Warning`.
 
+### Custom Recovery (optional)
+
+Override the optional `TryRecover` method to make the manual `Try Fix` action (per issue and `Try Fix All`) available for the issues your rule reports. Recovery is only ever invoked explicitly by the user - Scene Validation never fixes issues automatically during a scan.
+
+```csharp
+protected override bool TryRecover(in ValidationRuleRecoveryContext context)
+{
+    // The empty-label issue is reported for the "_label" property path.
+    if (context.PropertyPath == "_label")
+    {
+        var labelProperty = context.SerializedObject.FindProperty("_label");
+        if (labelProperty == null)
+        {
+            return false;
+        }
+
+        labelProperty.stringValue = context.TargetObject.name;
+        return true;
+    }
+
+    return false;
+}
+```
+
+- Return `true` only when you performed a fix that should be persisted; return `false` to leave the issue untouched.
+- Apply changes through `context.SerializedObject` or directly on `context.TargetObject`. Scene Validation flushes the serialized object, records prefab overrides, marks the owning scene dirty (or the asset dirty), and re-validates afterwards.
+- `context.PropertyPath` and `context.IssueId` identify which issue is being recovered; `context.Scope` is the scope the issue was collected in.
+- The `Try Fix` button appears automatically once `TryRecover` is overridden - there is no separate registration.
+
 ### ValidationRule Behavior Notes
 
 - Rules are discovered automatically from non-abstract `ValidationRule` types.
 - Rules appear in `Project Settings > derHugo > SceneValidation > Settings > Rules > Validation Rules`.
 - `ValidationRule<TTarget>` derives issue identity from the concrete rule type.
 - If `displayName` is empty, Scene Validation derives a fallback from property path or rule metadata.
-- Override `Validate` as `protected override`. Also override `SettingsDisplayName` / `SettingsDescription` as `protected override`: their base declarations are `protected internal`, so from your own assembly you use `protected`.
+- Override `Validate` as `protected override`. Also override `SettingsDisplayName` / `SettingsDescription` / `TryRecover` as `protected override`: their base declarations are `protected internal`, so from your own assembly you use `protected`.
 
 ### ValidationRule Related Pages
 

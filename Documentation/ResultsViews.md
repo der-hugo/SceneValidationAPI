@@ -59,13 +59,13 @@ Both views show:
 - grouped foldouts for validated scopes (scenes, prefabs, ScriptableObjects)
 - issue rows with object or asset selection
 - ignore/unignore controls per issue
-- `Try Fix` when recovery is configured and `Auto Try Fix` is disabled
+- `Try Fix` per issue and `Try Fix All` in the toolbar when recovery is configured
 - row/tooltips for scene, prefab, and ScriptableObject asset paths
 
-`Try Fix` is driven by recovery options configured through:
 
 - [`Required`](ScriptingAPI.md#required-attribute)
 - [`RequiredFieldRule<TTarget>`](ScriptingAPI.md#requiredfieldrule)
+- a custom [`ValidationRule<TTarget>`](ScriptingAPI.md#validationrule) that overrides `TryRecover`
 
 ## Interaction Details
 
@@ -78,6 +78,7 @@ Hovering the issue count shows the validated scope and the error/warning/ignored
 - Shows total status (`errors` / `warnings`) and ignored count.
 - A toggle to show/hide ignored issues appears when ignored issues exist (labeled `Ignored Issues Visible` / `Ignored Issues Hidden`).
 - Scope selector (Validation Window only) changes which scopes are displayed.
+- `Try Fix All (n)` appears when the current scope contains `n` non-ignored issues with configured recovery. It asks for confirmation, then attempts recovery for every one of them. This modifies scenes and assets, so review and save the results afterwards.
 - Settings button opens `Project Settings > derHugo > SceneValidation > Settings`.
 
 ### Group rows (scene, prefab, ScriptableObject, game object, component)
@@ -115,8 +116,9 @@ Hovering the issue count shows the validated scope and the error/warning/ignored
 - <kbd>Left click</kbd> issue text to select/ping the issue target.
 - If the issue target is unavailable, SceneValidation falls back to pinging the scene/asset path.
 - Use the row icon button to toggle `Ignore` / `Unignore` for that single issue.
-- `Try Fix` appears on supported issues when `Auto Try Fix` is disabled.
-- `missing managed-reference types` rows provide a manual `Remove` action and are never auto-fixed.
+- `Try Fix` appears on issues that have configured recovery.
+- `missing managed-reference types` rows provide a manual `Remove` action.
+- When a `Try Fix` or `Remove` button is disabled, hover it: its tooltip explains why and what to do (for example, a fix inside a closed prefab asset shows "Open the prefab in the edit stage to apply this fix.").
 - Special integrated rows can appear for built-in checks:
   - `missing components` on GameObjects
   - `missing managed-reference types` on GameObjects
